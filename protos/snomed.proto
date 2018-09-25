@@ -2,7 +2,7 @@ syntax = "proto3";
 package snomed;
 
 option go_package = "snomed";
-option java_package = "com.eldrix.terminology.snomedct";
+option java_package = "com.eldrix.terminology.model";
 option java_outer_classname = "Protos";
 option java_multiple_files = true;
 
@@ -105,14 +105,12 @@ message LanguageReferenceSet {
 	int64 acceptability_id=1;                   // A subtype of 900000000000511003 |Acceptability| indicating whether the description is acceptable or preferred for use in the specified language or dialect .
 }
 
-
 // SimpleMapReferenceSet is a straightforward one-to-one map between SNOMED-CT concepts and another
 // coding system. This is appropriate for simple maps.
 // See https://confluence.ihtsdotools.org/display/DOCRELFMT/4.2.9.+Simple+Map+Reference+Set
 message SimpleMapReferenceSet {
 	string map_target=1;                // The equivalent code in the other terminology, classification or code system.
 }
-
 
 // ComplexMapReferenceSet represents a complex one-to-many map between SNOMED-CT and another
 // coding system.
@@ -132,7 +130,6 @@ message ComplexMapReferenceSet {
 	int64 map_category_id=7;          // Only for extended complex map refsets: Identifies the SNOMED CT concept in the metadata hierarchy which represents the MapCategory for the associated map member.
 }
 
-
 // ExtendedConcept represents a concept together with 
 // sufficient additional contextual information relating to the 
 // concept, including reference set membership as well as
@@ -149,9 +146,6 @@ message ExtendedConcept {
 	repeated int64 direct_parent_ids = 5; // list of direct IS-A parents for concept
 	repeated int64 concept_refsets = 6;	// refsets to which the concept belong
 }
-
-
-
 
 // ExtendedDescription represents a description together with 
 // sufficient additional contextual information relating to the 
@@ -170,4 +164,30 @@ message ExtendedDescription {
 	repeated int64 direct_parent_ids = 6; // list of direct IS-A parents for concept
 	repeated int64 concept_refsets = 7;	// refsets to which the concept belong
 	repeated int64 description_refsets = 8; // refsets to which the description belong
+}
+
+
+// SearchRequest permits an arbitrary free-text search of the hierarchy.
+message SearchRequest {
+	string search  = 1; // the search string
+	repeated int64 recursive_parent_ids = 2; // limit search to descendents of these parents
+	repeated int64 direct_parent_ids = 3; // limit search to direct descendents of these parents
+	repeated int64 reference_set_ids = 4; // limit search to members of the specified reference sets
+	int32 maximum_hits = 5;		// limit for maximum hits
+	bool include_fully_specified_names = 6; // search fully specified names as well as synonyms, default false
+	bool include_inactive = 7;	// search inactive terms, default false
+	bool use_fuzzy_matching = 8; // use fuzzy matching, default false
+	bool use_fallback_fuzzy_matching=9; // use fuzzy matching only if no results at all without fuzzy, default true
+	string accepted_languages = 10;	// accepted languages, formatted as per https://tools.ietf.org/html/rfc7231#section-5.3.5
+}
+
+// SearchResponse provides an optimised search response, sufficient for display purposes.
+message SearchResponse {	
+	repeated Item items = 1;
+
+	message Item {
+		string term = 1;	// matched term
+		int64 concept_id = 2;	// concept identifier
+		string preferred_term = 3;	// cached preferred term for this concept
+	}
 }

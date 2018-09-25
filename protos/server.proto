@@ -2,6 +2,9 @@ syntax = "proto3";
 package snomed;
 
 option go_package = "snomed";
+option java_package = "com.eldrix.terminology.server";
+option java_outer_classname = "Server";
+option java_multiple_files = true;
 
 import "protos/snomed.proto";
 import "google/api/annotations.proto";
@@ -10,6 +13,7 @@ message SctID {
     int64 identifier=1;
 }
 
+// Core SNOMED service; this will provide the core model API
 service SnomedCT {
     rpc GetConcept (SctID) returns (Concept) {
         option (google.api.http) = {
@@ -21,4 +25,13 @@ service SnomedCT {
            get: "/v1/snomed/descriptions/{identifier}"
        };
    };
+}
+
+// Search SNOMED service, providing autocompletion / fast free-text search.
+service Search {
+    rpc Search(snomed.SearchRequest) returns (snomed.SearchResponse) {
+        option (google.api.http) = {
+            get: "/v1/snomed/search/s={s}"
+            };
+    };
 }
