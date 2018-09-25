@@ -1,7 +1,7 @@
 syntax = "proto3";
 package snomed;
 
-option go_package = "snomed";
+option go_package = "server";
 option java_package = "com.eldrix.terminology.server";
 option java_outer_classname = "Server";
 option java_multiple_files = true;
@@ -29,9 +29,9 @@ service SnomedCT {
 
 // Search SNOMED service, providing autocompletion / fast free-text search.
 service Search {
-    rpc Search(snomed.SearchRequest) returns (snomed.SearchResponse) {
+    rpc Search(SearchRequest) returns (SearchResponse) {
         option (google.api.http) = {
-            get: "/v1/snomed/search/s={s}"
+            get: "/v1/snomed/search"
             };
     };
 }
