@@ -1,0 +1,24 @@
+syntax = "proto3";
+package snomed;
+
+option go_package = "snomed";
+
+import "protos/snomed.proto";
+import "google/api/annotations.proto";
+
+message SctID {
+    int64 identifier=1;
+}
+
+service SnomedCT {
+    rpc GetConcept (SctID) returns (Concept) {
+        option (google.api.http) = {
+            get: "/v1/snomed/concepts/{identifier}"
+            };
+    };
+   rpc GetDescription (SctID) returns (Description) {
+       option (google.api.http) = { 
+           get: "/v1/snomed/descriptions/{identifier}"
+       };
+   };
+}
