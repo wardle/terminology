@@ -168,6 +168,41 @@ message ExtendedDescription {
 }
 
 
+
+// SubsumptionRequest requests a est of subsumption
+// This is based on on the HL7 FHIR terminology service definition
+// Does concept A subsumes concept B?
+// e.g. A:Disorder of liver, B: viral hepatitis. Result: Subsumes
+// See https://www.hl7.org/fhir/terminology-service.html
+message SubsumptionRequest {
+	string system = 1;		// This is ignored, but should be "http://snomed.info/sct"
+	int64 code_a = 2;
+	int64 code_b = 3;
+}
+
+// SubsumptionResponse gives the response of subsumption testing
+message SubsumptionResponse {
+	Result result = 1;
+	enum Result {
+		EQUIVALENT = 0;
+		SUBSUMES = 1;	// A subsumes B
+		SUBSUMED_BY = 2; // B subsumes A
+		NOT_SUBSUMED = 3; // not subsumed
+	}
+}
+
+message TranslateRequest {
+	int64 concept_id = 1;		// source concept identifier
+	int64 target_id = 2;	// target reference set. 
+}
+
+message TranslateResponse {
+	oneof result {
+		Concept concept = 1;		// a translation to another concept (e.g. for genericization)
+		ReferenceSetItem reference_set = 2;	// a translation to an item recorded in a reference set
+	}
+}
+
 // SearchRequest permits an arbitrary free-text search of the hierarchy.
 message SearchRequest {
 	string search  = 1; // the search string
