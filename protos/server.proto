@@ -1,12 +1,12 @@
 syntax = "proto3";
 package snomed;
 
-option go_package = "server";
+option go_package = "snomed";
 option java_package = "com.eldrix.terminology.server";
 option java_outer_classname = "Server";
 option java_multiple_files = true;
 
-import "protos/snomed.proto";
+import "snomed.proto";
 import "google/api/annotations.proto";
 
 message SctID {
@@ -18,11 +18,39 @@ service SnomedCT {
     rpc GetConcept (SctID) returns (Concept) {
         option (google.api.http) = {
             get: "/v1/snomed/concepts/{identifier}"
-            };
+        };
     };
-   rpc GetDescription (SctID) returns (Description) {
-       option (google.api.http) = { 
-           get: "/v1/snomed/descriptions/{identifier}"
+    
+    rpc GetExtendedConcept (SctID) returns (ExtendedConcept) {
+        option (google.api.http) = {
+            get: "/v1/snomed/concepts/{identifier}/extended"
+        };
+    };
+
+    rpc GetDescriptions (SctID) returns (stream Description) {
+        option (google.api.http) = {
+            get: "/v1/snomed/concepts/{identifier}/descriptions"
+        };
+    };
+    
+    rpc GetDescription (SctID) returns (Description) {
+        option (google.api.http) = { 
+            get: "/v1/snomed/descriptions/{identifier}"
+        };
+    };
+
+    rpc Translate (TranslateRequest) returns (TranslateResponse) {
+        option (google.api.http) = {
+            get: "/v1/snomed/concepts/{concept_id}/translate"
+        };
+    };
+
+   // Subsumes determines whether one concept subsumes another
+   // This is an implementation of the HL7 FHIR terminology service subsumes method
+   // (https://www.hl7.org/fhir/terminology-service.html)
+   rpc Subsumes(SubsumptionRequest) returns (SubsumptionResponse) {
+       option (google.api.http) = {
+           get: "/v1/snomed/subsumes"
        };
    };
 }
