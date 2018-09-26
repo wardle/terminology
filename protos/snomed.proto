@@ -168,6 +168,37 @@ message ExtendedDescription {
 }
 
 
+// Expression represents a compound SNOMED CT expression.
+// There would usually only be a single concept and possibly some refinement
+// See https://confluence.ihtsdotools.org/display/DOCSCG/Compositional+Grammar+-+Specification+and+Guide
+// The ABNF grammar for SNOMED compositional grammar is available here:
+// https://github.com/IHTSDO/SNOMEDCT-Languages/blob/master/SnomedCTCompositionalGrammar/CG%20Syntax/Compositional%20Grammar%20v2%20-%20ABNF%20(Normative).txt
+message Expression {
+
+	// Refinement provides an attribute-value pair. Can be nested.
+	message Refinement {
+		Concept attribute = 1;
+		oneof value {
+			Concept concept_value = 2;
+			string string_value = 3;
+			int64 int_value = 4;
+			double double_value = 5;
+		}
+		Refinement refinement = 6;	// optional refinement of the refinement
+	}
+
+	message RefinementGroup {
+		repeated Refinement refinement = 1;
+	}
+
+	message Clause {
+		Concept concept = 1;		// concept
+		repeated RefinementGroup refined_groups = 2; // refinements, if any
+	}
+
+	repeated Clause terms = 1; // the concepts which make up this expression, must be from the same top-level hierarchy
+
+}
 
 // SubsumptionRequest requests a est of subsumption
 // This is based on on the HL7 FHIR terminology service definition
