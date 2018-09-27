@@ -237,15 +237,19 @@ message TranslateResponse {
 // SearchRequest permits an arbitrary free-text search of the hierarchy.
 message SearchRequest {
 	string search  = 1; // the search string
-	repeated int64 recursive_parent_ids = 2; // limit search to descendents of these parents
-	repeated int64 direct_parent_ids = 3; // limit search to direct descendents of these parents
-	repeated int64 reference_set_ids = 4; // limit search to members of the specified reference sets
-	int32 maximum_hits = 5;		// limit for maximum hits
-	bool include_fully_specified_names = 6; // search fully specified names as well as synonyms, default false
-	bool include_inactive = 7;	// search inactive terms, default false
-	bool use_fuzzy_matching = 8; // use fuzzy matching, default false
-	bool use_fallback_fuzzy_matching=9; // use fuzzy matching only if no results at all without fuzzy, default true
-	string accepted_languages = 10;	// accepted languages, formatted as per https://tools.ietf.org/html/rfc7231#section-5.3.5
+	repeated int64 recursive_parent_ids = 2; 	// limit search to descendents of these parents
+	repeated int64 direct_parent_ids = 3; 		// limit search to direct descendents of these parents
+	repeated int64 reference_set_ids = 4; 		// limit search to members of the specified reference sets
+	int32 maximum_hits = 5;						// limit for maximum hits
+	bool include_inactive = 6;					// search inactive terms, default false
+	Fuzzy fuzzy = 7;  							// fuzziness preference
+	string accepted_languages = 8;				// accepted languages, formatted as per https://tools.ietf.org/html/rfc7231#section-5.3.5
+
+	enum Fuzzy {
+		FALLBACK_FUZZY = 0;			// try a fuzzy match only if there are no results without using fuzzy
+		ALWAYS_FUZZY = 1; 			// use fuzzy for the search
+		NO_FUZZY = 2;				// do not use fuzzy matching at all
+	}
 }
 
 // SearchResponse provides an optimised search response, sufficient for display purposes.
