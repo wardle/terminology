@@ -200,7 +200,7 @@ message Expression {
 
 }
 
-// SubsumptionRequest requests a est of subsumption
+// SubsumptionRequest requests a test of subsumption
 // This is based on on the HL7 FHIR terminology service definition
 // Does concept A subsumes concept B?
 // e.g. A:Disorder of liver, B: viral hepatitis. Result: Subsumes
