@@ -244,12 +244,11 @@ message TranslateRequest {
 
 message TranslateResponse {
 	oneof result {
-		Concept concept = 1;		// a translation to another concept (e.g. for genericization)
-		Mapped mapped = 2;		// a translation to potentially many items recorded in a reference set
+		Concept concept = 1;	// direct translation to another concept, via a simple reference set
+		MappedResponse mapped = 2; // map to another coding system, via a simple or complex map
 	}
-
-	message Mapped {
-		repeated ReferenceSetItem reference_set_item = 1;	// a translation to an item recorded in a reference set
+	message MappedResponse {
+		repeated ReferenceSetItem items = 1;
 	}
 }
 
