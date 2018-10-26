@@ -230,7 +230,11 @@ message TranslateRequest {
 message TranslateResponse {
 	oneof result {
 		Concept concept = 1;		// a translation to another concept (e.g. for genericization)
-		ReferenceSetItem reference_set_item = 2;	// a translation to an item recorded in a reference set
+		Mapped mapped = 2;		// a translation to potentially many items recorded in a reference set
+	}
+
+	message Mapped {
+		repeated ReferenceSetItem reference_set_item = 1;	// a translation to an item recorded in a reference set
 	}
 }
 
