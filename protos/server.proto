@@ -15,6 +15,7 @@ message SctID {
 
 // Core SNOMED service; this will provide the core model API
 service SnomedCT {
+
     rpc GetConcept (SctID) returns (Concept) {
         option (google.api.http) = {
             get: "/v1/snomed/concepts/{identifier}"
@@ -39,6 +40,9 @@ service SnomedCT {
         };
     };
 
+    // Translate translates from SNOMED CT to a reference set.
+    // If that reference set is a simple reference set, the best matching concept will be found, if possible.
+    // If that reference set is a map reference set, the target reference set item(s) will be found.
     rpc Translate (TranslateRequest) returns (TranslateResponse) {
         option (google.api.http) = {
             get: "/v1/snomed/concepts/{concept_id}/translate"
