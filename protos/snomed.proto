@@ -171,33 +171,48 @@ message ExtendedDescription {
 // Expression represents a compound SNOMED CT expression.
 // There would usually only be a single concept and possibly some refinement
 // See https://confluence.ihtsdotools.org/display/DOCSCG/Compositional+Grammar+-+Specification+and+Guide
-// The ABNF grammar for SNOMED compositional grammar is available here:
+// The ABNF grammar for SNOMED compositional grammar (CG) is available here:
 // https://github.com/IHTSDO/SNOMEDCT-Languages/blob/master/SnomedCTCompositionalGrammar/CG%20Syntax/Compositional%20Grammar%20v2%20-%20ABNF%20(Normative).txt
 message Expression {
 
-	// Refinement provides an attribute-value pair. Can be nested.
-	message Refinement {
-		Concept attribute = 1;
-		oneof value {
-			Concept concept_value = 2;
-			string string_value = 3;
-			int64 int_value = 4;
-			double double_value = 5;
-		}
-		Refinement refinement = 6;	// optional refinement of the refinement
+	// A simple reference to a concept with an optional preferred description included.
+	message ConceptReference {
+		int64 concept_id = 1;
+		string term = 2;
+	}
+
+	// A clause is a "subexpression" in the CG grammar, with refinements either flat
+	// or nested in groups
+	message Clause {
+		repeated ConceptReference focus_concepts = 1;	// should all be from same hierarchy
+		repeated Refinement refinements = 2;
+		repeated RefinementGroup refinement_groups = 3;
 	}
 
 	message RefinementGroup {
-		repeated Refinement refinement = 1;
+		repeated Refinement refinements = 1;
 	}
 
-	message Clause {
-		Concept concept = 1;		// concept
-		repeated RefinementGroup refined_groups = 2; // refinements, if any
+	// Refinement is a name/value pair (an attribute) permitting refinement of the focus concept(s)
+	// The value can be a concept, a clause, or a concrete value such as a string, integer or double
+	message Refinement {
+		ConceptReference refinement_concept = 1;	// the "attribute name"
+		oneof value {
+			ConceptReference concept_value = 2;
+			Clause clause_value = 3;	// a subexpression
+			string string_value = 4;
+			int64 int_value = 5;
+			double double_value = 6;
+		}
 	}
 
-	repeated Clause terms = 1; // the concepts which make up this expression, must be from the same top-level hierarchy
+	enum DefinitionStatus {
+		EQUIVALENT_TO = 0;		// default, if omitted
+		SUBTYPE_OF = 1;
+	}	
 
+	DefinitionStatus definition_status = 1;
+	Clause clause = 2;
 }
 
 // SubsumptionRequest requests a test of subsumption
