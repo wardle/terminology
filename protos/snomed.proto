@@ -167,6 +167,11 @@ message ExtendedDescription {
 	repeated int64 description_refsets = 8; // refsets to which the description belong
 }
 
+// ConceptReference is a simple reference to a concept with an optional preferred description included.
+message ConceptReference {
+	int64 concept_id = 1;
+	string term = 2;
+}
 
 // Expression represents a compound SNOMED CT expression.
 // There would usually only be a single concept and possibly some refinement
@@ -174,12 +179,6 @@ message ExtendedDescription {
 // The ABNF grammar for SNOMED compositional grammar (CG) is available here:
 // https://github.com/IHTSDO/SNOMEDCT-Languages/blob/master/SnomedCTCompositionalGrammar/CG%20Syntax/Compositional%20Grammar%20v2%20-%20ABNF%20(Normative).txt
 message Expression {
-
-	// A simple reference to a concept with an optional preferred description included.
-	message ConceptReference {
-		int64 concept_id = 1;
-		string term = 2;
-	}
 
 	// A clause is a "subexpression" in the CG grammar, with refinements either flat
 	// or nested in groups
