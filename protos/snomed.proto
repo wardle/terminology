@@ -251,6 +251,10 @@ message TranslateResponse {
 	}
 }
 
+message ParseRequest {
+	string s = 1;		// string to parse
+}
+
 // SearchRequest permits an arbitrary free-text search of the hierarchy.
 message SearchRequest {
 	string search  = 1; // the search string

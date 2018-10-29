@@ -57,6 +57,13 @@ service SnomedCT {
            get: "/v1/snomed/subsumes"
        };
    };
+
+   // Parse parses a SNOMED expression (compositional grammar)
+   rpc Parse(ParseRequest) returns (Expression) {
+       option (google.api.http) = {
+           get: "/v1/snomed/expression/parse"
+       };
+   };
 }
 
 // Search SNOMED service, providing autocompletion / fast free-text search.
