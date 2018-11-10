@@ -195,7 +195,7 @@ message Expression {
 	// Refinement is a name/value pair (an attribute) permitting refinement of the focus concept(s)
 	// The value can be a concept, a clause, or a concrete value such as a string, integer or double
 	message Refinement {
-		ConceptReference refinement_concept = 1;	// the "attribute name"
+		ConceptReference refinement_concept = 1;	// the "attribute name", must be child of 246061005 (Attribute)
 		oneof value {
 			ConceptReference concept_value = 2;
 			Clause clause_value = 3;	// a subexpression
@@ -236,19 +236,40 @@ message SubsumptionResponse {
 	}
 }
 
-message TranslateRequest {
-	int64 concept_id = 1;		// source concept identifier
-	int64 target_id = 2;	// target reference set. 
+
+// RefinementRequest requests the possible refinements 
+// for the specified concept.
+message RefinementRequest {
+	int64 concept_id = 1;		// concept to be refined
 }
 
-message TranslateResponse {
-	oneof result {
-		Concept concept = 1;	// direct translation to another concept, via a simple reference set
-		MappedResponse mapped = 2; // map to another coding system, via a simple or complex map
+message RefinementResponse {
+	Concept concept = 1;
+	repeated Refinement refinements = 2;
+
+	message Refinement {
+		ConceptReference attribute = 1;	// the type of refinement, eg. laterality
+		ConceptReference parent = 2;		// the parent in the IS-A hierarchy that define value set
 	}
-	message MappedResponse {
-		repeated ReferenceSetItem items = 1;
+}
+
+
+message TranslateFromRequest {
+	int64 refset_id = 1;
+	string s = 2;
+}
+message TranslateFromResponse {
+	repeated Item translations = 1;
+
+	message Item {
+		ReferenceSetItem reference_set_item = 1;
+		Concept concept = 2;
 	}
+}
+
+message TranslateToRequest {
+	int64 concept_id = 1;		// source concept identifier
+	int64 target_id = 2;	// target reference set. 
 }
 
 message ParseRequest {

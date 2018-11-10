@@ -40,12 +40,24 @@ service SnomedCT {
         };
     };
 
-    // Translate translates from SNOMED CT to a reference set.
-    // If that reference set is a simple reference set, the best matching concept will be found, if possible.
-    // If that reference set is a map reference set, the target reference set item(s) will be found.
-    rpc Translate (TranslateRequest) returns (TranslateResponse) {
+    // CrossMap translates from SNOMED CT to an alternative coding system via a map reference set
+    rpc CrossMap(TranslateToRequest) returns (stream ReferenceSetItem) {
         option (google.api.http) = {
-            get: "/v1/snomed/concepts/{concept_id}/translate"
+            get: "/v1/snomed/concepts/{concept_id}/crossmap"
+        };
+    };
+
+    // FromCrossMap translates from an external coding system to SNOMED-CT.
+    rpc FromCrossMap(TranslateFromRequest) returns (TranslateFromResponse) {
+        option (google.api.http) = {
+            get: "/v1/snomed/crossmaps/{refset_id}/{s}"
+        };
+    };
+
+    // Map translates a SNOMED CT concept into the best match within the specified reference set
+    rpc Map(TranslateToRequest) returns (Concept) {
+        option (google.api.http) = {
+            get: "/v1/snomed/concepts/{concept_id}/map"
         };
     };
 
@@ -63,6 +75,13 @@ service SnomedCT {
        option (google.api.http) = {
            get: "/v1/snomed/expression/parse"
        };
+   };
+
+   // Refinements returns the appropriate refinements for this specified concept
+   rpc Refinements(RefinementRequest) returns (RefinementResponse) {
+        option (google.api.http) = {
+            get: "/v1/snomed/concepts/{concept_id}/refinements"
+        };
    };
 }
 
