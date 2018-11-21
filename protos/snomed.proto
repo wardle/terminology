@@ -148,6 +148,16 @@ message ExtendedConcept {
 	repeated int64 concept_refsets = 6;	// refsets to which the concept belong
 }
 
+// ConceptDescriptions defined the preferred description
+// and available synonyms for the concept specified.
+message ConceptDescriptions {
+	Concept concept = 1;
+	Description preferred_description = 2;
+	Description fully_specified_name = 3;
+	repeated Description synonyms = 4;
+	repeated Description definitions = 5;
+}
+
 // ExtendedDescription represents a description together with 
 // sufficient additional contextual information relating to the 
 // description, including reference set membership as well as
@@ -155,7 +165,6 @@ message ExtendedConcept {
 // the concept's membership of reference sets.
 // It is, in essence, a denormalised relationship, useful for 
 // wire-exchange purposes.
-// TODO: add language field
 message ExtendedDescription {
 	Description description = 1;
 	reserved 2;			// reserved for language of this description
@@ -241,6 +250,7 @@ message SubsumptionResponse {
 // for the specified concept.
 message RefinementRequest {
 	int64 concept_id = 1;		// concept to be refined
+	int32 choice_limit = 2;		// include list of choices if the number available is below this count, zero for none.
 }
 
 message RefinementResponse {
@@ -249,7 +259,8 @@ message RefinementResponse {
 
 	message Refinement {
 		ConceptReference attribute = 1;	// the type of refinement, eg. laterality
-		ConceptReference parent = 2;		// the parent in the IS-A hierarchy that define value set
+		ConceptReference root_value = 2;		// the parent in the IS-A hierarchy that define value set
+		repeated ConceptReference choices = 3; // the actual value set (a list of choices) for the refinement
 	}
 }
 

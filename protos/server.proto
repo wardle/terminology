@@ -22,13 +22,20 @@ service SnomedCT {
         };
     };
     
+    // GetExtendedConcept returns the concept with the specified identifier.
+    // The preferred description will be determined by language preferences
+    // defined at runtime. 
+    // For example, the header accept-language may be used to define language preferences
+    // using tags as per format defined by IETF (http://www.ietf.org/rfc/rfc2616.txt)
+    // or by setting at a server-wide basis.
     rpc GetExtendedConcept (SctID) returns (ExtendedConcept) {
         option (google.api.http) = {
             get: "/v1/snomed/concepts/{identifier}/extended"
         };
     };
 
-    rpc GetDescriptions (SctID) returns (stream Description) {
+    // GetDescriptions returns descriptions for a given concept.
+    rpc GetDescriptions (SctID) returns (ConceptDescriptions) {
         option (google.api.http) = {
             get: "/v1/snomed/concepts/{identifier}/descriptions"
         };
