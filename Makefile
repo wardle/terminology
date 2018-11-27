@@ -11,5 +11,10 @@ go: protos/snomed.proto
 	mkdir -p out/golang
 	protoc $(INCLUDE) --go_out=out/golang protos/*
 
+swift : protos/*
+	mkdir -p out/swift
+	protoc $(INCLUDE) --swift_out=out/swift protos/*
+	
+	
 clean:
 	rm -rf out
