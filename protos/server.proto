@@ -2,7 +2,7 @@ syntax = "proto3";
 package snomed;
 
 option go_package = "snomed";
-option java_package = "com.eldrix.terminology.server";
+option java_package = "com.eldrix.terminology.snomedct";
 option java_outer_classname = "Server";
 option java_multiple_files = true;
 
