@@ -289,14 +289,14 @@ message ParseRequest {
 
 // SearchRequest permits an arbitrary free-text search of the hierarchy.
 message SearchRequest {
-	string search  = 1; // the search string
-	repeated int64 recursive_parent_ids = 2; 	// limit search to descendents of these parents
-	repeated int64 direct_parent_ids = 3; 		// limit search to direct descendents of these parents
-	repeated int64 reference_set_ids = 4; 		// limit search to members of the specified reference sets
-	int32 maximum_hits = 5;						// limit for maximum hits
-	bool include_inactive = 6;					// search inactive terms, default false
-	Fuzzy fuzzy = 7;  							// fuzziness preference
-	string accepted_languages = 8;				// accepted languages, formatted as per https://tools.ietf.org/html/rfc7231#section-5.3.5
+	string s  = 1; 							// the search string, mandatory
+	repeated int64 is_a = 2; 				// limit search to descendents of these parents, default:root
+	repeated int64 direct_parents = 3; 		// limit search to direct descendents of these parents, default:none
+	repeated int64 concept_refsets = 4; 	// limit search to concepts in the specified reference sets, default: none
+	repeated int64 description_refsets = 5;	// limit search to descriptions in the specified reference sets, default: none
+	int32 maximum_hits = 6;						// limit for maximum hits, use default if zero
+	bool include_inactive = 7;					// search inactive terms, default false
+	Fuzzy fuzzy = 8;  							// fuzziness preference, default fallback fuzzy
 
 	enum Fuzzy {
 		FALLBACK_FUZZY = 0;			// try a fuzzy match only if there are no results without using fuzzy
