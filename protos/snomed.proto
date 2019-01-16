@@ -296,7 +296,7 @@ message ExtractRequest {
 message ExtractResponse {
 	message Term {
 		ConceptReference concept = 1;
-		float64 score = 2;		// confidence score
+		double score = 2;		// confidence score
 		bool negated = 3;		// is this negated?
 	}
 	repeated Term terms = 1;
