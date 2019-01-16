@@ -223,6 +223,8 @@ message Expression {
 	Clause clause = 2;
 }
 
+
+
 // SubsumptionRequest requests a test of subsumption
 // This is based on on the HL7 FHIR terminology service definition
 // Does concept A subsumes concept B?
@@ -287,7 +289,20 @@ message ParseRequest {
 	string s = 1;		// string to parse
 }
 
-// SearchRequest permits an arbitrary free-text search of the hierarchy.
+message ExtractRequest {
+	string s = 1;			// string to parse
+}
+
+message ExtractResponse {
+	message Term {
+		ConceptReference concept = 1;
+		float64 score = 2;		// confidence score
+		bool negated = 3;		// is this negated?
+	}
+	repeated Term terms = 1;
+}
+
+// SearchRequest performs a free-text search of the hierarchy.
 message SearchRequest {
 	string s  = 1; 							// the search string, mandatory
 	repeated int64 is_a = 2; 				// limit search to descendents of these parents, default:root
@@ -295,7 +310,7 @@ message SearchRequest {
 	repeated int64 concept_refsets = 4; 	// limit search to concepts in the specified reference sets, default: none
 	repeated int64 description_refsets = 5;	// limit search to descriptions in the specified reference sets, default: none
 	int32 maximum_hits = 6;						// limit for maximum hits, use default if zero
-	bool include_inactive = 7;					// search inactive terms, default false
+	bool include_inactive = 7;					// search descriptions for inactive concepts, default false
 	Fuzzy fuzzy = 8;  							// fuzziness preference, default fallback fuzzy
 
 	enum Fuzzy {

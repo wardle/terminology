@@ -90,6 +90,14 @@ service SnomedCT {
             get: "/v1/snomed/concepts/{concept_id}/refinements"
         };
    };
+
+
+   rpc Extract(ExtractRequest) returns (ExtractResponse) {
+       option (google.api.http) = {
+            post: "/v1/snomed/nlp/extract"
+            body: "*"
+       };
+   }
 }
 
 // Search SNOMED service, providing autocompletion / fast free-text search.
