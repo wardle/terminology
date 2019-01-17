@@ -91,13 +91,6 @@ service SnomedCT {
         };
    };
 
-
-   rpc Extract(ExtractRequest) returns (ExtractResponse) {
-       option (google.api.http) = {
-            post: "/v1/snomed/nlp/extract"
-            body: "*"
-       };
-   }
 }
 
 // Search SNOMED service, providing autocompletion / fast free-text search.
@@ -107,4 +100,10 @@ service Search {
             get: "/v1/snomed/search"
             };
     };
+	rpc Extract(ExtractRequest) returns (ExtractResponse) {
+  		option (google.api.http) = {
+  			post: "/v1/snomed/nlp/extract"
+  			body: "*"
+		};
+   	};
 }
