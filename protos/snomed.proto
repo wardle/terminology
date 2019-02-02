@@ -289,17 +289,34 @@ message ParseRequest {
 	string s = 1;		// string to parse
 }
 
+
+// ExtractRequest requests natural language processing entity matching for the specified
+// free-text. Requests can include a range of hints specifying specialty and other
+// contextual clues, to aid matching.
 message ExtractRequest {
 	string s = 1;			// string to parse
+	repeated int64 hints = 2; // contextual hints, list of concept identifiers
 }
 
+// ExtractResponse provides a list of entities from the unstructured text.
+// As an individual entity may correspond to multiple concepts (imagine "diabetes" might 
+// map to diabetes mellitus, diabetes insipidus etc.), we return multiple concepts
+// sorted in order of "best" match, as well as the best match if, algorithmically, we
+// are confident of a best match, and a generic match, a generic concept that subsumes 
+// the matches found. The latter is most useful when trying to make sense, safely, 
+// during non-interactive use. This service will also return complete SNOMED CT expressions
+// in the future.
 message ExtractResponse {
-	message Term {
-		ConceptReference concept = 1;
+	message Entity {
+		string text = 1;		// text
 		double score = 2;		// confidence score
 		bool negated = 3;		// is this negated?
+		repeated ConceptReference concepts = 4;	// possible matching concepts
+		repeated string expressions = 5; // possible matching SNOMED CT expressions
+		int64 best_match = 6;		// the best match, algorithmically, if found
+		int64 generic_match = 7;		// the generic match for all matching concepts
 	}
-	repeated Term terms = 1;
+	repeated Entity entities = 1;
 }
 
 // SearchRequest performs a free-text search of the hierarchy.
@@ -312,6 +329,7 @@ message SearchRequest {
 	int32 maximum_hits = 6;						// limit for maximum hits, use default if zero
 	bool include_inactive = 7;					// search descriptions for inactive concepts, default false
 	Fuzzy fuzzy = 8;  							// fuzziness preference, default fallback fuzzy
+	repeated int64 hints = 9;		// hints to help search (e.g. context like specialty, location, etc), list of concept identifiers
 
 	enum Fuzzy {
 		FALLBACK_FUZZY = 0;			// try a fuzzy match only if there are no results without using fuzzy
@@ -319,6 +337,7 @@ message SearchRequest {
 		NO_FUZZY = 2;				// do not use fuzzy matching at all
 	}
 }
+
 
 // SearchResponse provides an optimised search response, sufficient for display purposes.
 message SearchResponse {	
@@ -330,3 +349,11 @@ message SearchResponse {
 		string preferred_term = 3;	// cached preferred term for this concept
 	}
 }
+
+// SearchFeedback provides feedback on a search. 
+message SearchFeedback {
+	SearchRequest request = 1;			// the original search request
+	SearchResponse response = 2;		// the search response
+	int64 selected_concept = 3;			// what was finally chosen by the user
+}
+

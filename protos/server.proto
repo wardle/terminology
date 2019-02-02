@@ -103,7 +103,7 @@ service Search {
 	rpc Extract(ExtractRequest) returns (ExtractResponse) {
   		option (google.api.http) = {
   			post: "/v1/snomed/nlp/extract"
-  			body: "*"
+  			body: "s"
 		};
    	};
 }
