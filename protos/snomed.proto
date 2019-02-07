@@ -293,6 +293,10 @@ message TranslateFromResponse {
 	message Item {
 		ReferenceSetItem reference_set_item = 1;
 		Concept concept = 2;
+		repeated int64 same_as = 3;		// a list of other concepts that this target is the SAME_AS
+		repeated int64 possibly_equivalent_to = 4; // a list of other concepts that this target is possibly equivalent to
+		repeated int64 similar_to = 5;	// a list of other concepts that this target is SIMILAR_TO
+		repeated int64 replaced_by = 6; // a list of other concepts that this target has been REPLACED_BY
 	}
 }
 
