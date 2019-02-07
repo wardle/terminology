@@ -69,6 +69,8 @@ message ReferenceSetItem {
         LanguageReferenceSet language=9;
 		SimpleMapReferenceSet simple_map=10;
 		ComplexMapReferenceSet complex_map=11;
+		AttributeValueReferenceSet attribute_value=12;
+		AssociationReferenceSet association=13;
     }
 }
 
@@ -113,6 +115,7 @@ message SimpleMapReferenceSet {
 	string map_target=1;                // The equivalent code in the other terminology, classification or code system.
 }
 
+
 // ComplexMapReferenceSet represents a complex one-to-many map between SNOMED-CT and another
 // coding system.
 // A 447250001 |Complex map type reference set|enables representation of maps where each SNOMED
@@ -129,6 +132,19 @@ message ComplexMapReferenceSet {
 	string map_target=5;             // The target code in the target terminology, classification or code system.
 	int64 correlation=6;          // A child of 447247004 |SNOMED CT source code to target map code correlation value|in the metadata hierarchy, identifying the correlation between the SNOMED CT concept and the target code.
 	int64 map_category=7;          // Only for extended complex map refsets: Identifies the SNOMED CT concept in the metadata hierarchy which represents the MapCategory for the associated map member.
+}
+
+// AttributeValueReferenceSet provides a way to associate arbitrary attributes with a SNOMED-CT component
+// See https://confluence.ihtsdotools.org/display/DOCRELFMT/5.2.3+Attribute+Value+Reference+Set
+message AttributeValueReferenceSet {
+	int64 value_id=1;	//The tagged value applied to the referencedComponentId. A subtype of 900000000000491004 |Attribute value|.
+}
+
+// AssociationReferenceSet provides a way to associate one component with another, with meaning
+// defined by the refset itself. 
+// See https://confluence.ihtsdotools.org/display/DOCRELFMT/5.2.5+Association+Reference+Set
+message AssociationReferenceSet {
+	int64 target_component_id=1;
 }
 
 // ExtendedConcept represents a concept together with 
