@@ -40,6 +40,12 @@ service SnomedCT {
             get: "/v1/snomed/concepts/{identifier}/descriptions"
         };
     };
+
+    rpc GetReferenceSets(SctID) returns (stream ReferenceSetItem) {
+        option (google.api.http) = {
+            get: "/v1/snomed/concepts/{identifier}/refsets"
+        };
+    };
     
     rpc GetDescription (SctID) returns (Description) {
         option (google.api.http) = { 
