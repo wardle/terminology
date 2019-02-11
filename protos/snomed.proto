@@ -289,6 +289,7 @@ message TranslateFromRequest {
 }
 message TranslateFromResponse {
 	repeated Item translations = 1;
+	int64 generic_match = 2;			// helpful match that is the LCS (lowest common subsumer) of all matches
 
 	message Item {
 		ReferenceSetItem reference_set_item = 1;
