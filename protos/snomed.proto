@@ -290,11 +290,11 @@ message RefinementResponse {
 
 message TranslateFromRequest {
 	int64 refset_id = 1;
-	string s = 2;
+	string s = 2;			// 
+	bool include_inactive = 3;	// include inactive results in the translations?
 }
 message TranslateFromResponse {
 	repeated Item translations = 1;	// sorted by group and priority
-	bool include_inactive = 2;	// include inactive results in the translations
 
 	message Item {
 		ReferenceSetItem reference_set_item = 1;
