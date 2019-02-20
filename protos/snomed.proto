@@ -293,8 +293,8 @@ message TranslateFromRequest {
 	string s = 2;
 }
 message TranslateFromResponse {
-	repeated Item translations = 1;
-	int64 generic_match = 2;			// helpful match that is the LCS (lowest common subsumer) of all matches
+	repeated Item translations = 1;	// sorted by group and priority
+	bool include_inactive = 2;	// include inactive results in the translations
 
 	message Item {
 		ReferenceSetItem reference_set_item = 1;
