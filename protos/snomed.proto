@@ -383,3 +383,16 @@ message SearchFeedback {
 	int64 selected_concept = 3;			// what was finally chosen by the user
 }
 
+message SynonymRequest {
+	string s = 1;					// search string
+	repeated int64 is_a = 2; 				// limit search to descendents of these parents, default:root
+	int32 maximum_hits = 3;						// limit for maximum hits, use default if zero
+	bool include_inactive = 4;					// search descriptions for inactive concepts, default false
+	SearchRequest.Fuzzy fuzzy = 5;  			// fuzziness preference, default fallback fuzzy
+	bool include_children = 6;				// whether to include children of identified concepts
+}
+
+message SynonymResponseItem {
+	string s = 1;				// a synonym
+}
+

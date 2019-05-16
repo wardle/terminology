@@ -110,6 +110,12 @@ service Search {
   		option (google.api.http) = {
   			post: "/v1/snomed/nlp/extract"
   			body: "s"
-		};
-   	};
+	        };
+    };
+    
+    rpc Synonyms(SynonymRequest) returns (stream SynonymResponseItem) {
+        option (google.api.http) = {
+            get: "/v1/snomed/synonyms"
+        };
+    };
 }
