@@ -13,6 +13,10 @@ message SctID {
     int64 identifier=1;
 }
 
+message ReferenceSetItemID {
+    string identifier=1;
+}
+
 // Core SNOMED service; this will provide the core model API
 service SnomedCT {
 
@@ -41,15 +45,24 @@ service SnomedCT {
         };
     };
 
+    // GetReferenceSets returns the reference sets to which this concept is a member
     rpc GetReferenceSets(SctID) returns (stream ReferenceSetItem) {
         option (google.api.http) = {
             get: "/v1/snomed/concepts/{identifier}/refsets"
         };
     };
     
+    // GetDescription returns a single description, by identifier
     rpc GetDescription (SctID) returns (Description) {
         option (google.api.http) = { 
             get: "/v1/snomed/descriptions/{identifier}"
+        };
+    };
+
+    // GetReferenceSetItem returns a single item from a reference set, by identifier
+    rpc GetReferenceSetItem(ReferenceSetItemID) returns (ReferenceSetItem) {
+        option (google.api.http) = {
+            get: "/v1/snomed/refset_items/{identifier}"
         };
     };
 
