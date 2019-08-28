@@ -51,6 +51,13 @@ service SnomedCT {
             get: "/v1/snomed/concepts/{identifier}/refsets"
         };
     };
+
+    // GetAllChildren returns all children of the specified concept
+    rpc GetAllChildren(SctID) returns (stream ConceptReference) {
+        option (google.api.http) = {
+            get: "/v1/snomed/concepts/{identifier}/allChildren"
+        };
+    };
     
     // GetDescription returns a single description, by identifier
     rpc GetDescription (SctID) returns (Description) {

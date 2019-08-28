@@ -191,7 +191,7 @@ message ExtendedDescription {
 	reserved 2;			// reserved for language of this description
 	Concept concept = 3;	// concept to which this description relates
 	Description preferred_description = 4; // concept's preferred description
-	repeated int64 recursive_parent_ids = 5;	// list of all (recursive) IS-A parents for concept
+	repeated int64 all_parent_ids = 5;	// list of all (recursive) IS-A parents for concept
 	repeated int64 direct_parent_ids = 6; // list of direct IS-A parents for concept
 	repeated int64 concept_refsets = 7;	// refsets to which the concept belong
 	repeated int64 description_refsets = 8; // refsets to which the description belong
