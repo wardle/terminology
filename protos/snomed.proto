@@ -164,7 +164,7 @@ message ExtendedConcept {
 	Concept concept = 1;
 	repeated Relationship relationships = 2;  // (parent) relationships for this concept
 	Description preferred_description = 3;		// cached preferred synonym
-	repeated int64 recursive_parent_ids = 4;	// list of all (recursive) IS-A parents for concept
+	repeated int64 all_parent_ids = 4;	// list of all (recursive) IS-A parents for concept
 	repeated int64 direct_parent_ids = 5; // list of direct IS-A parents for concept
 	repeated int64 concept_refsets = 6;	// refsets to which the concept belong
 }
