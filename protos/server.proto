@@ -88,7 +88,7 @@ service SnomedCT {
     };
 
     // Map translates a SNOMED CT concept into the best match within the specified reference set
-    rpc Map(TranslateToRequest) returns (Concept) {
+    rpc Map(TranslateToRequest) returns (TranslateToResponse) {
         option (google.api.http) = {
             get: "/v1/snomed/concepts/{concept_id}/map"
         };
@@ -139,3 +139,4 @@ service Search {
         };
     };
 }
+

@@ -293,6 +293,7 @@ message TranslateFromRequest {
 	string s = 2;			// 
 	bool include_inactive = 3;	// include inactive results in the translations?
 }
+
 message TranslateFromResponse {
 	repeated Item translations = 1;	// sorted by group and priority
 
@@ -309,7 +310,22 @@ message TranslateFromResponse {
 message TranslateToRequest {
 	int64 concept_id = 1;		// source concept identifier
 	int64 target_id = 2;	// target reference set. 
+	IncludeParents parents = 3;	// whether to map to parents of the target set, if not found in the target set directly
+
+	enum IncludeParents {
+		FALLBACK = 0;			// include parents only if conventional map to target set fails
+		ALWAYS = 1; 			// include parents always
+		NEVER = 2;				// do not include parents
+	}
 }
+
+message TranslateToResponse {
+	repeated Item translations = 1; // list of translations, sorted in scored order (best first)
+	message Item {
+		ConceptReference concept = 1;
+	}
+}
+
 
 message ParseRequest {
 	string s = 1;		// string to parse
