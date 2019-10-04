@@ -74,7 +74,7 @@ service SnomedCT {
     };
 
     // CrossMap translates from SNOMED CT to an alternative coding system via a map reference set
-    rpc CrossMap(TranslateToRequest) returns (stream ReferenceSetItem) {
+    rpc CrossMap(CrossMapRequest) returns (stream ReferenceSetItem) {
         option (google.api.http) = {
             get: "/v1/snomed/concepts/{concept_id}/crossmap"
         };
@@ -88,7 +88,7 @@ service SnomedCT {
     };
 
     // Map translates a SNOMED CT concept into the best match within the specified reference set
-    rpc Map(TranslateToRequest) returns (TranslateToResponse) {
+    rpc Map(MapRequest) returns (MapResponse) {
         option (google.api.http) = {
             get: "/v1/snomed/concepts/{concept_id}/map"
         };

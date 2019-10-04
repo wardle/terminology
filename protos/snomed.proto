@@ -307,23 +307,26 @@ message TranslateFromResponse {
 	}
 }
 
-message TranslateToRequest {
-	int64 concept_id = 1;		// source concept identifier
-	int64 target_id = 2;	// target reference set. 
-	IncludeParents parents = 3;	// whether to map to parents of the target set, if not found in the target set directly
+message CrossMapRequest {
+	int64 concept_id = 1;
+	int64 refset_id = 2;
+}
 
-	enum IncludeParents {
+message MapRequest {
+	int64 concept_id = 1;		// source concept identifier
+	int64 refset_id = 2;		// target reference set. 
+	repeated int64 target_id = 3; // a list of target concepts to which to map
+	Parents parents = 4;	// whether to map to parents of the target set, if not found in the target set directly
+
+	enum Parents {
 		FALLBACK = 0;			// include parents only if conventional map to target set fails
 		ALWAYS = 1; 			// include parents always
 		NEVER = 2;				// do not include parents
 	}
 }
 
-message TranslateToResponse {
-	repeated Item translations = 1; // list of translations, sorted in scored order (best first)
-	message Item {
-		ConceptReference concept = 1;
-	}
+message MapResponse {
+	repeated ConceptReference translations = 1; // list of translations, sorted in scored order (best first)
 }
 
 
