@@ -356,7 +356,7 @@ message ExpressionConstraint {
 	message Attribute {
 		Cardinality cardinality = 1;	// optional
 		bool reverse = 2;		// reversed or not, default not.
-		Subexpression attribute_name = 3;	// attribute name is a subexpression itself
+		Subexpression name = 3;	// attribute name is a subexpression itself
 		ComparisonOperator operator = 4;
 		oneof value {
 			Subexpression subexpression_value = 5;
