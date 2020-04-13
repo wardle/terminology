@@ -387,9 +387,10 @@ message SearchResponse {
 	repeated Item items = 1;
 
 	message Item {
-		string term = 1;	// matched term
-		int64 concept_id = 2;	// concept identifier
-		string preferred_term = 3;	// cached preferred term for this concept
+		int64 description_id = 1;	// term identifier
+		string term = 2;	// matched term
+		int64 concept_id = 3;	// concept identifier
+		string preferred_term = 4;	// cached preferred term for this concept
 	}
 }
 
