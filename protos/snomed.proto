@@ -167,6 +167,7 @@ message ExtendedConcept {
 	repeated int64 all_parent_ids = 4;	// list of all (recursive) IS-A parents for concept
 	repeated int64 direct_parent_ids = 5; // list of direct IS-A parents for concept
 	repeated int64 concept_refsets = 6;	// refsets to which the concept belong
+	repeated Description descriptions = 7; // all descriptions
 }
 
 // ConceptDescriptions defined the preferred description
